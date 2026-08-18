@@ -1,0 +1,474 @@
+/* ═══════════════════════════════════════════════════════════════════
+   ҰЛАН ҚАЛҚАНЫ — стили
+   Вся палитра — в блоке :root ниже. Меняете 6 значений — меняется
+   весь сайт. Под ваш логотип правим --gold и --ink.
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root{
+  /* — цвет — */
+  --ink:      #0A2246;   /* тёмно-синий из логотипа фонда */
+  --ink-2:    #143059;   /* на тон светлее — карточки на тёмном */
+  --gold:     #C6A15B;   /* приглушённое антикварное золото */
+  --gold-2:   #7E6129;   /* золото для текста на светлом фоне (контраст ≥ 4.5:1) */
+  --paper:    #FBF8F3;   /* основной светлый фон */
+  --sand:     #F1ECE2;   /* второй светлый фон, для чередования */
+  --text:     #17253F;   /* основной текст (в синеву, под логотип) */
+  --muted:    #5C6B7A;   /* вторичный текст */
+  --line:     #E0D8C8;   /* линии на светлом */
+  --line-d:   rgba(198,161,91,.22); /* линии на тёмном */
+
+  /* — типографика — */
+  --serif: "PT Serif", "Times New Roman", Georgia, serif;
+  --sans:  "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* — ритм — */
+  --wrap: 1180px;
+  --pad:  clamp(20px, 5vw, 40px);
+  --sec-y: clamp(72px, 10vw, 140px);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   ЗАСТАВКА ПРИ ЗАГРУЗКЕ
+   Одно движение: щит поднимается — знак раскрывается снизу вверх
+   чистым срезом, из размытия в резкость, и в тот же момент под ним
+   дочерчивается золотая линия. Выход быстрее входа — так движение
+   читается как завершённое, а не как ещё одна анимация.
+   Тайминг: вход 0,12–1,3 с · пауза · уход 1,85–2,40 с
+   ═══════════════════════════════════════════════════════════════════ */
+
+.splash{
+  position:fixed; inset:0; z-index:999; display:grid; place-items:center;
+  background:var(--ink);
+  animation:splash-out .55s cubic-bezier(.7,0,.84,0) 1.85s forwards;
+}
+
+/* Две фазы, и это принципиально:
+   раскрытие — читаемое движение с мягким ускорением и торможением;
+   оседание  — отдельно, экспоненциальным замедлением.
+   Если сделать всё одним expo-out, срез проскакивает за треть секунды
+   и зритель не успевает увидеть, как поднимается щит. */
+.splash__in{
+  position:relative; display:flex; flex-direction:column; align-items:center; gap:30px;
+  animation:
+    splash-settle 1.5s  cubic-bezier(.16,1,.3,1)  .15s  both,
+    splash-lift    .55s cubic-bezier(.7,0,.84,0) 1.85s forwards;
+}
+
+/* фаза 1 — срез снизу вверх, из размытия в резкость */
+.splash__mark{
+  width:clamp(104px,23vw,138px); height:auto;
+  animation:splash-wipe .95s cubic-bezier(.55,0,.2,1) .15s both;
+}
+/* золотая линия дочерчивается, пока срез проходит середину знака */
+.splash__line{
+  width:104px; height:1px; background:var(--gold); transform-origin:center;
+  animation:splash-line .8s cubic-bezier(.33,1,.68,1) .62s both;
+}
+/* единственный акцент — приглушённое золотое свечение позади знака */
+.splash__glow{
+  position:absolute; top:42%; left:50%; width:300px; aspect-ratio:1;
+  translate:-50% -50%; border-radius:50%; pointer-events:none;
+  background:radial-gradient(circle, rgba(198,161,91,.30), transparent 64%);
+  animation:splash-glow 1.6s cubic-bezier(.33,1,.68,1) .4s both;
+}
+
+@keyframes splash-wipe{
+  0%  {clip-path:inset(100% 0 0 0); filter:brightness(0) invert(1) blur(9px)}
+  70% {                             filter:brightness(0) invert(1) blur(0px)}
+  100%{clip-path:inset(0 0 0 0);    filter:brightness(0) invert(1) blur(0px)}
+}
+@keyframes splash-line{
+  0%  {transform:scaleX(0); opacity:0}
+  25% {opacity:1}
+  100%{transform:scaleX(1); opacity:1}
+}
+@keyframes splash-glow{
+  0%  {opacity:0;  scale:.75}
+  65% {opacity:1;  scale:1}
+  100%{opacity:.5; scale:1.03}
+}
+/* фаза 2 — короткое оседание после раскрытия */
+@keyframes splash-settle{ from{transform:translateY(10px) scale(1.045)} to{transform:none} }
+/* уход — быстрее входа: движение читается как завершённое */
+@keyframes splash-lift  { from{transform:none} to{transform:translateY(-16px) scale(1.045)} }
+@keyframes splash-out   { to{opacity:0; visibility:hidden} }
+
+/* Если JS работает — держим анимацию на паузе, пока не загрузится файл
+   логотипа: иначе на медленной сети движение проиграет по пустому месту.
+   Без JS класса .js не будет и анимация просто пойдёт сразу. */
+html.js .splash__in,
+html.js .splash__mark,
+html.js .splash__line,
+html.js .splash__glow{animation-play-state:paused}
+html.js .splash.is-ready .splash__in,
+html.js .splash.is-ready .splash__mark,
+html.js .splash.is-ready .splash__line,
+html.js .splash.is-ready .splash__glow{animation-play-state:running}
+
+/* пропуск по тапу */
+.splash.is-done{animation:none; opacity:0; visibility:hidden;
+  transition:opacity .3s ease, visibility 0s linear .3s}
+.splash.is-done .splash__in{animation:none}
+
+html.splash-on{overflow:hidden}
+body.is-locked{overflow:hidden}
+
+/* ── база ───────────────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth; scroll-padding-top:88px; -webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--paper); color:var(--text);
+  font-family:var(--sans); font-size:17px; line-height:1.72;
+  font-feature-settings:"kern","liga"; -webkit-font-smoothing:antialiased;
+}
+img,svg{max-width:100%; display:block}
+a{color:inherit; text-decoration:none}
+h1,h2,h3{margin:0; font-family:var(--serif); font-weight:700; line-height:1.14; letter-spacing:-.012em}
+p{margin:0 0 1.15em}
+p:last-child{margin-bottom:0}
+::selection{background:var(--gold); color:var(--ink)}
+:focus-visible{outline:2px solid var(--gold); outline-offset:3px; border-radius:2px}
+
+.wrap{width:100%; max-width:var(--wrap); margin-inline:auto; padding-inline:var(--pad)}
+
+/* ── переключение языка ─────────────────────────────────────────── */
+html[data-lang="ru"] .kk,
+html[data-lang="kk"] .ru{display:none !important}
+
+/* ── шапка ──────────────────────────────────────────────────────── */
+.hdr{
+  position:sticky; top:0; z-index:60;
+  background:rgba(13,27,42,.92); backdrop-filter:blur(14px) saturate(140%);
+  border-bottom:1px solid var(--line-d);
+  transition:background .35s ease, border-color .35s ease;
+}
+.hdr__in{display:flex; align-items:center; gap:24px; height:76px}
+.brand{display:flex; align-items:center; gap:12px; flex:0 0 auto; min-height:44px}
+.brand__mark{width:auto; height:42px; filter:brightness(0) invert(1) drop-shadow(0 1px 3px rgba(0,0,0,.35))}
+.brand__txt{display:flex; flex-direction:column; line-height:1}
+.brand__name{font-family:var(--serif); font-size:19px; font-weight:700; color:#fff; letter-spacing:.005em}
+.brand__sub{font-size:10.5px; letter-spacing:.19em; text-transform:uppercase; color:var(--gold); margin-top:5px}
+
+.nav-back{display:none}
+.nav{display:flex; align-items:center; gap:30px; margin-left:auto; font-size:14.5px; font-weight:500}
+.nav a{color:rgba(255,255,255,.78); position:relative; padding:6px 0; transition:color .25s}
+.nav a::after{
+  content:""; position:absolute; left:0; bottom:0; height:1px; width:0;
+  background:var(--gold); transition:width .3s cubic-bezier(.4,0,.2,1);
+}
+.nav a:hover{color:#fff}
+.nav a:hover::after, .nav a.is-active::after{width:100%}
+.nav a.is-active{color:var(--gold)}
+
+.hdr__side{display:none}
+/* оптический вынос: у кнопки RU есть внутреннее поле под зону нажатия,
+   и без сдвига буквы висят на 9 px левее правого края сетки */
+.lang-switch{margin-right:-9px}
+.lang-switch{display:flex; align-items:center; gap:2px; margin-left:6px}
+.lang-switch button{
+  background:none; border:0; cursor:pointer; font:inherit;
+  min-width:40px; min-height:44px; display:inline-flex; align-items:center; justify-content:center;
+  font-size:12.5px; font-weight:600; letter-spacing:.09em;
+  color:rgba(255,255,255,.45); transition:color .25s;
+}
+.lang-switch button:hover{color:#fff}
+.lang-switch button.is-on{color:var(--gold)}
+.lang-switch__sep{width:1px; height:12px; background:rgba(255,255,255,.22)}
+
+.burger{display:none; width:44px; height:44px; background:none; border:0; cursor:pointer; padding:14px 10px}
+.burger span{display:block; height:1.5px; background:#fff; border-radius:2px; transition:transform .3s, opacity .25s}
+.burger span+span{margin-top:5px}
+.burger[aria-expanded="true"] span:first-child{transform:translateY(3.2px) rotate(45deg)}
+.burger[aria-expanded="true"] span:last-child{transform:translateY(-3.2px) rotate(-45deg)}
+
+/* ── главный экран ──────────────────────────────────────────────── */
+.hero{
+  position:relative; background:var(--ink); color:#fff; overflow:hidden;
+  padding-top:clamp(80px,13vw,150px);
+}
+.hero::after{ /* мягкое золотое свечение снизу-справа */
+  content:""; position:absolute; right:-12%; bottom:-40%; width:70%; aspect-ratio:1;
+  background:radial-gradient(circle, rgba(198,161,91,.16), transparent 62%);
+  pointer-events:none;
+}
+.hero__orn{position:absolute; inset:0; color:rgba(198,161,91,.13); pointer-events:none;
+  -webkit-mask-image:linear-gradient(160deg, #000 0%, transparent 62%);
+          mask-image:linear-gradient(160deg, #000 0%, transparent 62%);
+}
+.hero__seal{ /* крупный знак-подложка справа */
+  position:absolute; z-index:1; pointer-events:none;
+  right:clamp(-70px,-1vw,20px); top:52%; transform:translateY(-52%);
+  width:clamp(320px,36vw,540px); aspect-ratio:214/220; opacity:.055; background:#fff;
+  -webkit-mask:url(../img/logo-mark.png) center/contain no-repeat;
+          mask:url(../img/logo-mark.png) center/contain no-repeat;
+}
+@media (max-width:860px){ .hero__seal{opacity:.045; right:-22%; width:80vw} }
+
+/* Ширину здесь не ограничиваем: у блока была своя max-width, из-за неё
+   первый экран центрировался сам по себе и уезжал вправо на 110 px
+   относительно шапки, полосы и всех заголовков. Ширину текста держит
+   сам .hero__lead. */
+.hero__in{position:relative; z-index:2; padding-bottom:clamp(64px,9vw,116px)}
+
+.eyebrow{
+  font-size:11.5px; letter-spacing:.24em; text-transform:uppercase;
+  color:var(--gold); margin:0 0 26px; font-weight:600;
+}
+.hero__title{
+  font-size:clamp(3rem, 9.5vw, 6.5rem); line-height:.98; letter-spacing:-.028em;
+  margin:0 0 30px; color:#fff;
+}
+.hero__lead{
+  font-size:clamp(17px, 2.1vw, 21px); line-height:1.62; max-width:41ch;
+  color:rgba(255,255,255,.8); margin:0 0 42px; text-wrap:pretty;
+}
+.hero__cta{display:flex; flex-wrap:wrap; gap:14px}
+
+.hero__strip{position:relative; z-index:2; border-top:1px solid var(--line-d); background:rgba(0,0,0,.16)}
+.hero__strip-in{
+  display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap;
+  gap:clamp(14px,2vw,26px);
+  padding-block:20px; font-size:12px; letter-spacing:.17em; text-transform:uppercase;
+  color:rgba(255,255,255,.62); font-weight:500;
+}
+/* на узких экранах строка переносится — там равномерное распределение
+   даёт рваные промежутки, поэтому возвращаем обычный шаг */
+@media (max-width:860px){ .hero__strip-in{justify-content:flex-start; gap:14px} }
+.hero__strip-in i{width:4px; height:4px; border-radius:50%; background:var(--gold); flex:0 0 auto}
+
+/* ── кнопки ─────────────────────────────────────────────────────── */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  padding:15px 30px; font-size:14.5px; font-weight:600; letter-spacing:.02em;
+  border:1px solid transparent; border-radius:2px; cursor:pointer;
+  transition:transform .2s ease, background .25s ease, color .25s ease, border-color .25s ease, box-shadow .25s ease;
+  font-family:inherit;
+}
+.btn:active{transform:translateY(1px)}
+.btn--gold{background:var(--gold); color:var(--ink); box-shadow:0 1px 0 rgba(255,255,255,.28) inset}
+.btn--gold:hover{background:#D8B672; box-shadow:0 8px 24px -10px rgba(198,161,91,.9)}
+.btn--ghost{border-color:rgba(255,255,255,.3); color:#fff}
+.btn--ghost:hover{border-color:var(--gold); color:var(--gold); background:rgba(198,161,91,.07)}
+.sec--sand .btn--ghost, .sec:not(.sec--dark) .btn--ghost{border-color:var(--line); color:var(--text)}
+.sec:not(.sec--dark) .btn--ghost:hover{border-color:var(--gold-2); color:var(--gold-2); background:rgba(140,109,47,.05)}
+.btn--full{width:100%; margin-top:6px}
+
+/* ── секции ─────────────────────────────────────────────────────── */
+.sec{padding-block:var(--sec-y)}
+.sec--sand{background:var(--sand)}
+.sec--dark{background:var(--ink); color:#fff}
+
+.sec__head{margin-bottom:clamp(40px,5vw,64px); max-width:800px}
+.sec__head h2{font-size:clamp(1.9rem, 4.2vw, 3rem); text-wrap:balance}
+.sec__head h2::after,
+.partner__l h2::after{content:""; display:block; width:56px; height:2px; background:var(--gold); margin-top:26px}
+.sec__note{margin-top:22px; color:var(--muted); font-size:16px}
+.sec__head--light h2{color:#fff}
+.sec__head--light .sec__note{color:rgba(255,255,255,.66)}
+
+/* ── о фонде ────────────────────────────────────────────────────── */
+.about{display:block}
+.about__text{max-width:62ch}
+.about__text .lead{
+  font-family:var(--serif); font-size:clamp(19px,2.3vw,23px); line-height:1.55;
+  color:var(--ink); margin-bottom:1.1em; text-wrap:pretty;
+}
+.about__text p:not(.lead){color:var(--muted)}
+
+/* Перечень благополучателей — выдержка из Устава, а не врезка.
+   Ни плашки, ни маркеров: тот же сериф, что в обращении учредителя,
+   волосяные линейки и замыкающая линейка снизу — набор, а не блок. */
+.who{margin-top:clamp(52px,7vw,90px); max-width:1000px}
+.who__h{
+  font-size:clamp(1rem,1.6vw,1.15rem); color:var(--ink);
+  margin-bottom:clamp(16px,2.2vw,24px);
+}
+.who__list{list-style:none; margin:0; padding:0; border-bottom:1px solid var(--line)}
+.who__list li{
+  border-top:1px solid var(--line);
+  /* открывающая линейка задаётся ниже, у первой строки */
+  padding:clamp(17px,2.1vw,25px) 0;
+  font-family:var(--serif);
+  font-size:clamp(20px,2.5vw,28px); line-height:1.34;
+  color:var(--ink); text-wrap:pretty;
+  transition:border-color .35s ease;
+}
+.who__list li:first-child{border-top:2px solid var(--ink)}
+.who__list li span{display:inline-block; transition:transform .4s cubic-bezier(.16,1,.3,1)}
+
+@media (hover:hover){
+  .who__list li:hover,
+  .who__list li:hover + li{border-top-color:var(--gold)}
+  .who__list:has(li:last-child:hover){border-bottom-color:var(--gold)}
+  .who__list li:hover span{transform:translateX(10px)}
+}
+
+/* ── карточки деятельности ──────────────────────────────────────── */
+.cards{display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--line)}
+.card{
+  background:var(--sand); padding:clamp(28px,3.4vw,46px);
+  position:relative; transition:background .35s ease, transform .35s ease;
+}
+.card:hover{background:var(--paper)}
+.card__ico{width:32px; height:32px; color:var(--gold-2); margin-bottom:26px}
+.card h3{font-size:21px; line-height:1.3; margin-bottom:14px; max-width:22ch; text-wrap:balance}
+.card p{font-size:15.5px; line-height:1.66; color:var(--muted); margin:0; max-width:44ch}
+
+/* ── обращение учредителя ───────────────────────────────────────── */
+.letter{
+  background:var(--ink-2); border:1px solid var(--line-d); border-radius:3px;
+  padding:clamp(32px,5vw,68px); max-width:900px; position:relative;
+}
+.letter::after{ /* печать-водяной знак — знак фонда */
+  content:""; position:absolute; pointer-events:none;
+  right:clamp(22px,4vw,56px); bottom:clamp(22px,4vw,48px);
+  width:124px; height:128px; opacity:.10; background:#fff;
+  -webkit-mask:url(../img/logo-mark.png) center/contain no-repeat;
+          mask:url(../img/logo-mark.png) center/contain no-repeat;
+}
+.letter__body{position:relative; z-index:1}
+.letter__body p{
+  font-family:var(--serif); font-size:clamp(16.5px,1.85vw,19px); line-height:1.75;
+  color:rgba(255,255,255,.86); margin-bottom:1.25em; text-wrap:pretty;
+}
+.letter__sign{
+  margin-top:38px; padding-top:30px; border-top:1px solid var(--line-d);
+  display:flex; flex-direction:column; gap:5px;
+}
+.letter__respect{font-size:14px; color:rgba(255,255,255,.5); font-style:italic; margin-bottom:6px}
+.letter__name{font-family:var(--serif); font-size:19px; font-weight:700; color:#fff}
+.letter__role{font-size:14px; color:var(--gold); letter-spacing:.02em}
+
+/* ── галерея ────────────────────────────────────────────────────── */
+.gal{display:grid; grid-template-columns:repeat(2,1fr); gap:clamp(12px,1.6vw,20px)}
+.gal__item{margin:0; border-radius:3px; overflow:hidden}
+.gal__item--wide{grid-column:1 / -1}
+.gal__item img{width:100%; height:100%; object-fit:cover; aspect-ratio:16/9}
+.gal__item--wide img{aspect-ratio:21/9}
+.ph{
+  aspect-ratio:16/9; display:grid; place-items:center; text-align:center; padding:20px;
+  background:
+    repeating-linear-gradient(45deg, rgba(198,161,91,.07) 0 1px, transparent 1px 11px),
+    var(--sand);
+  border:1px dashed var(--line);
+  font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:#A99B80;
+}
+.gal__item--wide .ph{aspect-ratio:21/9}
+
+/* ── сотрудничество ─────────────────────────────────────────────── */
+.partner{display:grid; grid-template-columns:1.25fr .9fr; gap:clamp(34px,6vw,80px); align-items:center}
+.partner__l h2{font-size:clamp(1.8rem,3.8vw,2.7rem); margin-bottom:26px; text-wrap:balance}
+.partner__l p{color:var(--muted); max-width:52ch}
+.partner__r{list-style:none; margin:0; padding:0}
+.partner__r li{
+  display:flex; align-items:center; gap:14px; padding:17px 0;
+  border-bottom:1px solid var(--line); font-size:16px; font-weight:500;
+}
+.partner__r li:first-child{border-top:1px solid var(--line)}
+.partner__r li::before{
+  content:""; width:21px; height:21px; flex:0 0 auto; border-radius:50%;
+  border:1px solid var(--gold-2);
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 21 21'%3E%3Cpath d='M6 10.8l3.1 3.1L15.2 7.4' fill='none' stroke='%237E6129' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/15px no-repeat;
+}
+
+/* ── контакты ───────────────────────────────────────────────────── */
+.cts{display:grid; grid-template-columns:1fr .85fr; gap:clamp(36px,6vw,76px); align-items:start}
+.cts__row{padding:20px 0; border-bottom:1px solid var(--line-d); display:flex; flex-direction:column; gap:7px}
+.cts__row:first-child{padding-top:0}
+.cts__k{font-size:11.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--gold)}
+.cts__v{font-size:18px; color:#fff; line-height:1.45}
+.cts__v--link{
+  font-family:var(--serif); font-size:26px; font-weight:700; letter-spacing:.01em;
+  transition:color .25s; width:max-content;
+  display:inline-flex; align-items:center; min-height:44px;
+}
+.cts__v--link:hover{color:var(--gold)}
+.cts__btns{display:flex; flex-wrap:wrap; gap:13px; margin-top:32px}
+
+.form{background:var(--ink-2); border:1px solid var(--line-d); border-radius:3px; padding:clamp(26px,3.4vw,38px)}
+.form h3{font-size:21px; color:#fff; margin-bottom:10px}
+.form__note{font-size:13.5px; color:rgba(255,255,255,.5); line-height:1.55; margin-bottom:24px}
+.fld{display:block; margin-bottom:16px}
+.fld>span{display:block; font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:rgba(255,255,255,.5); margin-bottom:8px}
+.fld input,.fld textarea{
+  width:100%; background:rgba(255,255,255,.045); color:#fff;
+  border:1px solid rgba(255,255,255,.13); border-radius:2px;
+  padding:13px 14px; font:inherit; font-size:16px; line-height:1.5;
+  min-height:48px; /* 16px обязательны: при меньшем размере iOS зумит страницу */
+  transition:border-color .25s, background .25s;
+}
+.fld textarea{resize:vertical; min-height:96px}
+.fld input:focus,.fld textarea:focus{outline:0; border-color:var(--gold); background:rgba(255,255,255,.07)}
+.fld input.is-bad,.fld textarea.is-bad{border-color:#C4574B}
+.form__err{margin-top:12px; font-size:13.5px; color:#E08A80}
+
+/* ── подвал ─────────────────────────────────────────────────────── */
+.ftr{background:#061838; color:rgba(255,255,255,.55); padding-block:38px; border-top:1px solid var(--line-d)}
+.ftr__in{display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap}
+.ftr__brand{display:flex; align-items:center; gap:12px}
+.ftr__brand span{display:flex; flex-direction:column; line-height:1.35}
+.ftr__brand b{font-family:var(--serif); font-size:16px; color:#fff; font-weight:700}
+.ftr__brand i{font-style:normal; font-size:12.5px; letter-spacing:.02em}
+.ftr__cp{margin:0; font-size:12.5px}
+
+/* ── появление при прокрутке ────────────────────────────────────── */
+.reveal{opacity:0; transform:translateY(18px); transition:opacity .7s cubic-bezier(.22,1,.36,1), transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal.is-in{opacity:1; transform:none}
+
+/* ── адаптив ────────────────────────────────────────────────────── */
+@media (max-width:1000px){
+  .about,.partner,.cts{grid-template-columns:1fr}
+  .partner__r{margin-top:6px}
+}
+@media (max-width:860px){
+  .burger{display:block}
+  .nav{
+    position:fixed; inset:76px 0 auto 0; flex-direction:column; gap:0;
+    background:var(--ink);
+    border-bottom:1px solid var(--line-d); padding:8px var(--pad) 26px;
+    box-shadow:0 18px 40px -20px rgba(0,0,0,.7);
+    transform:translateY(-12px); opacity:0; pointer-events:none; transition:.3s ease;
+    font-size:17px;
+  }
+  .nav.is-open{transform:none; opacity:1; pointer-events:auto}
+  .nav a{padding:16px 0; border-bottom:1px solid rgba(255,255,255,.07); width:100%}
+  .nav a::after{display:none}
+  .nav .lang-switch{width:100%; gap:0; margin:14px 0 0}
+  .nav .lang-switch button{flex:1; min-height:52px; font-size:15px; letter-spacing:.14em;
+    border:1px solid rgba(255,255,255,.14); border-radius:2px}
+  .nav .lang-switch button.is-on{border-color:var(--gold); color:var(--gold)}
+  .nav .lang-switch button:first-child{border-right:0}
+  .lang-switch__sep{display:none}
+  .hdr__side{display:flex; align-items:center; margin-left:auto}
+  .lang-switch{margin-right:0}
+  .nav-back{display:block; position:fixed; inset:0; background:rgba(4,12,26,.55);
+    opacity:0; pointer-events:none; transition:opacity .3s ease; z-index:-1}
+  .nav-back.is-on{opacity:1; pointer-events:auto}
+}
+@media (max-width:700px){
+  .cards{grid-template-columns:1fr}
+  .letter::after{display:none}
+}
+@media (max-width:640px){
+  body{font-size:16px}
+  .hero__cta .btn, .cts__btns .btn{flex:1 1 100%}
+  .gal{grid-template-columns:1fr}
+  .letter::before{display:none}
+  .brand__sub{display:none}
+  html[data-lang="ru"] .brand__sub.ru, html[data-lang="kk"] .brand__sub.kk{display:none !important}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .splash{display:none}
+  html{scroll-behavior:auto}
+  .reveal{opacity:1; transform:none; transition:none}
+  *{animation-duration:.01ms !important; transition-duration:.01ms !important}
+}
+
+/* ── печать ─────────────────────────────────────────────────────── */
+@media print{
+  .hdr,.nav,.form,.hero__orn,.gal,.btn{display:none !important}
+  body,.sec--dark,.hero,.letter{background:#fff !important; color:#000 !important}
+  .letter__body p,.cts__v,.sec__head--light h2,.hero__title,.hero__lead{color:#000 !important}
+}

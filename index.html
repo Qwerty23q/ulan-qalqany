@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ru" data-lang="ru">
+<head>
+<meta charset="utf-8">
+<script>document.documentElement.className+=' js'</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ұлан Қалқаны — частный фонд поддержки военнослужащих и ветеранов</title>
+<meta name="description" content="Частный фонд «Ұлан Қалқаны» — благотворительная, материальная, консультационная и социальная поддержка военнослужащих, сотрудников специальных государственных и правоохранительных органов, ветеранов боевых действий и семей погибших при исполнении служебного долга. Астана, Казахстан.">
+<meta name="theme-color" content="#0A2246">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ұлан Қалқаны — частный фонд">
+<meta property="og:description" content="Поддержка военнослужащих, ветеранов и семей тех, кто исполнил свой долг перед страной.">
+<!-- og:image (картинка-превью при отправке ссылки в WhatsApp/Telegram) пока не сделана.
+     Нужен файл 1200×630 — сделаем, когда будут фото. -->
+<meta property="og:locale" content="ru_RU">
+
+<link rel="icon" href="assets/img/logo-mark.png" type="image/png">
+<link rel="preload" as="image" href="assets/img/logo-mark.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<!-- ── ЗАСТАВКА ────────────────────────────────────────────────────────
+     Показывается ~2,3 с при загрузке. Длительность меняется в
+     assets/js/main.js (SPLASH_MS) и в @keyframes в style.css.
+     Если JS отключён, заставка всё равно исчезнет — она снимается
+     CSS-анимацией, а не скриптом.
+──────────────────────────────────────────────────────────────────── -->
+<div class="splash" id="splash" aria-hidden="true">
+  <div class="splash__in">
+    <span class="splash__glow"></span>
+    <img class="splash__mark" src="assets/img/logo-mark.png" alt="" width="214" height="220">
+    <span class="splash__line"></span>
+  </div>
+</div>
+
+<!-- ── ШАПКА ───────────────────────────────────────────────────────── -->
+<header class="hdr" id="hdr">
+  <div class="wrap hdr__in">
+
+    <a class="brand" href="#top" aria-label="Ұлан Қалқаны">
+      <!-- Знак фонда. В шапке выводится белым монохромом (CSS-фильтр):
+           на тёмно-синем фоне синий оригинал теряется. -->
+      <img class="brand__mark" src="assets/img/logo-mark.png" alt="" width="214" height="220">
+      <span class="brand__txt">
+        <span class="brand__name">Ұлан&nbsp;Қалқаны</span>
+        <span class="brand__sub ru">частный фонд</span>
+        <span class="brand__sub kk">жеке қор</span>
+      </span>
+    </a>
+
+    <nav class="nav" id="nav">
+      <a href="#about"><span class="ru">О фонде</span><span class="kk">Қор туралы</span></a>
+      <a href="#work"><span class="ru">Деятельность</span><span class="kk">Қызмет</span></a>
+      <a href="#letter"><span class="ru">Обращение</span><span class="kk">Үндеу</span></a>
+      <a href="#partner"><span class="ru">Сотрудничество</span><span class="kk">Ынтымақтастық</span></a>
+      <a href="#contacts"><span class="ru">Контакты</span><span class="kk">Байланыс</span></a>
+
+      <div class="lang-switch" role="group" aria-label="Язык / Тіл">
+        <button type="button" data-set-lang="kk" aria-pressed="false">KZ</button>
+        <span class="lang-switch__sep" aria-hidden="true"></span>
+        <button type="button" data-set-lang="ru" aria-pressed="true">RU</button>
+      </div>
+    </nav>
+
+    <div class="nav-back" id="navBack" aria-hidden="true"></div>
+
+    <div class="hdr__side">
+      <button class="burger" id="burger" aria-label="Меню" aria-expanded="false" aria-controls="nav"><span></span><span></span></button>
+    </div>
+
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ── ГЛАВНЫЙ ЭКРАН ───────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero__seal" aria-hidden="true"></div>
+
+  <div class="hero__orn" aria-hidden="true">
+    <svg width="100%" height="100%" preserveAspectRatio="none">
+      <defs>
+        <pattern id="orn" width="120" height="120" patternUnits="userSpaceOnUse">
+          <path d="M60 18 L92 60 L60 102 L28 60 Z" fill="none" stroke="currentColor" stroke-width="1"/>
+          <path d="M60 38 L78 60 L60 82 L42 60 Z" fill="none" stroke="currentColor" stroke-width="1"/>
+          <path d="M0 60 H12 M108 60 H120 M60 0 V12 M60 108 V120" stroke="currentColor" stroke-width="1"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#orn)"/>
+    </svg>
+  </div>
+
+  <div class="wrap hero__in">
+    <p class="eyebrow reveal"><span class="ru">Частный фонд · Республика Казахстан</span><span class="kk">Жеке қор · Қазақстан Республикасы</span></p>
+
+    <h1 class="hero__title reveal">Ұлан&nbsp;Қалқаны</h1>
+
+    <p class="hero__lead reveal ru">Благотворительная, материальная и социальная поддержка военнослужащих, ветеранов боевых действий и семей тех, кто исполнил свой долг перед страной.</p>
+    <p class="hero__lead reveal kk">Әскери қызметшілерге, жауынгерлік іс-қимылдар ардагерлеріне және елі алдындағы борышын өтегендердің отбасыларына қайырымдылық, материалдық және әлеуметтік қолдау.</p>
+
+    <div class="hero__cta reveal">
+      <a class="btn btn--gold" href="#partner"><span class="ru">Сотрудничество</span><span class="kk">Ынтымақтастық</span></a>
+      <a class="btn btn--ghost" href="#contacts"><span class="ru">Связаться с фондом</span><span class="kk">Қормен байланысу</span></a>
+    </div>
+  </div>
+
+  <div class="hero__strip">
+    <div class="wrap hero__strip-in">
+      <span><span class="ru">Законность</span><span class="kk">Заңдылық</span></span>
+      <i aria-hidden="true"></i>
+      <span><span class="ru">Прозрачность</span><span class="kk">Ашықтық</span></span>
+      <i aria-hidden="true"></i>
+      <span><span class="ru">Гласность</span><span class="kk">Жариялылық</span></span>
+      <i aria-hidden="true"></i>
+      <span><span class="ru">Вне политики</span><span class="kk">Саясаттан тыс</span></span>
+    </div>
+  </div>
+</section>
+
+<!-- ── О ФОНДЕ ─────────────────────────────────────────────────────── -->
+<section class="sec" id="about">
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <h2 class="ru">О фонде</h2>
+      <h2 class="kk">Қор туралы</h2>
+    </div>
+
+    <div class="about">
+      <div class="about__text reveal">
+        <p class="lead ru">Частный фонд «Ұлан&nbsp;Қалқаны» учреждён по собственной инициативе группой единомышленников — ветеранов и пенсионеров различных силовых структур Республики Казахстан.</p>
+        <p class="lead kk">«Ұлан&nbsp;Қалқаны» жеке қоры Қазақстан Республикасының түрлі күш құрылымдарында қызмет еткен ардагерлер мен зейнеткерлерден құралған пікірлестер тобының жеке бастамасымен құрылды.</p>
+
+        <p class="ru">Основная цель деятельности — оказание благотворительной, материальной, консультационной и социальной поддержки тем, кто нёс и несёт службу, а также их семьям.</p>
+        <p class="kk">Қордың негізгі мақсаты — әскери қызмет өткерген және өткеріп жүргендерге, сондай-ақ олардың отбасыларына қайырымдылық, материалдық, консультациялық және әлеуметтік қолдау көрсету.</p>
+
+        <p class="ru">Фонд формируется на добровольные пожертвования сознательных граждан и организаций страны и строит свою работу на принципах законности, прозрачности и гласности, не преследуя политических целей.</p>
+        <p class="kk">Қор ел азаматтары мен ұйымдарының ерікті қайырмалдықтары есебінен қалыптасады және өз жұмысын заңдылық, ашықтық және жариялылық қағидаттарына сүйене отырып, ешқандай саяси мақсат көздемей жүргізеді.</p>
+      </div>
+
+      <div class="who reveal">
+        <h3 class="who__h ru">Благополучатели Фонда</h3>
+        <h3 class="who__h kk">Қордың игілік алушылары</h3>
+        <ul class="who__list">
+          <li><span class="ru">Военнослужащие</span><span class="kk">Әскери қызметшілер</span></li>
+          <li><span class="ru">Сотрудники специальных государственных и правоохранительных органов</span><span class="kk">Арнаулы мемлекеттік және құқық қорғау органдарының қызметкерлері</span></li>
+          <li><span class="ru">Ветераны боевых действий</span><span class="kk">Жауынгерлік іс-қимылдар ардагерлері</span></li>
+          <li><span class="ru">Уволенные с военной службы в запас</span><span class="kk">Әскери қызметтен запасқа шығарылғандар</span></li>
+          <li><span class="ru">Семьи погибших и пострадавших при исполнении служебного долга</span><span class="kk">Қызметтік борышын өтеу кезінде қаза тапқандар мен зардап шеккендердің отбасылары</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ДЕЯТЕЛЬНОСТЬ ────────────────────────────────────────────────── -->
+<section class="sec sec--sand" id="work">
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <h2 class="ru">Направления деятельности</h2>
+      <h2 class="kk">Қызмет бағыттары</h2>
+      <p class="sec__note ru">В рамках уставной деятельности Фонд планирует:</p>
+      <p class="sec__note kk">Жарғылық қызмет аясында Қор мыналарды жоспарлайды:</p>
+    </div>
+
+    <div class="cards">
+      <article class="card reveal">
+        <svg class="card__ico" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l12-6 12 6v14l-12 6-12-6z"/><path d="M4 11l12 6 12-6M16 17v14"/></svg>
+        <h3 class="ru">Вещевая, продуктовая и медицинская помощь</h3>
+        <h3 class="kk">Заттай, азық-түлік және медициналық көмек</h3>
+        <p class="ru">Адресная материальная поддержка военнослужащих, ветеранов и семей Благополучателей.</p>
+        <p class="kk">Әскери қызметшілерге, ардагерлерге және игілік алушылардың отбасыларына атаулы материалдық қолдау.</p>
+      </article>
+
+      <article class="card reveal">
+        <svg class="card__ico" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h26v15H3z"/><path d="M11 12V7h10v5M3 18h26"/></svg>
+        <h3 class="ru">Социальная адаптация и трудоустройство</h3>
+        <h3 class="kk">Әлеуметтік бейімдеу және жұмысқа орналастыру</h3>
+        <p class="ru">Содействие уволенным со службы военнослужащим в возвращении к гражданской жизни и поиске работы.</p>
+        <p class="kk">Қызметтен босатылған әскери қызметшілерге бейбіт өмірге оралуға және жұмыс табуға жәрдемдесу.</p>
+      </article>
+
+      <article class="card reveal">
+        <svg class="card__ico" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 29V4M8 5h17l-4 6 4 6H8"/></svg>
+        <h3 class="ru">Военно-патриотические мероприятия</h3>
+        <h3 class="kk">Әскери-патриоттық іс-шаралар</h3>
+        <p class="ru">Культурно-массовые и патриотические программы, сохранение памяти и воинских традиций.</p>
+        <p class="kk">Мәдени-бұқаралық және патриоттық бағдарламалар, ерлік жадын және әскери дәстүрлерді сақтау.</p>
+      </article>
+
+      <article class="card reveal">
+        <svg class="card__ico" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14h24v14H4z"/><path d="M2 8h28v6H2zM16 28V8"/><path d="M16 8s-1-5-5-5-3 5 1 5M16 8s1-5 5-5 3 5-1 5"/></svg>
+        <h3 class="ru">Безвозмездная передача ресурсов</h3>
+        <h3 class="kk">Ресурстарды өтеусіз беру</h3>
+        <p class="ru">Передача имущества, оборудования и иных необходимых ресурсов государственным учреждениям и Благополучателям.</p>
+        <p class="kk">Мемлекеттік мекемелер мен игілік алушыларға мүлікті, жабдықты және өзге де қажетті ресурстарды беру.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ── ОБРАЩЕНИЕ УЧРЕДИТЕЛЯ ────────────────────────────────────────── -->
+<section class="sec sec--dark" id="letter">
+  <div class="wrap">
+    <div class="sec__head sec__head--light reveal">
+      <h2 class="ru">Обращение учредителя</h2>
+      <h2 class="kk">Құрылтайшының үндеуі</h2>
+    </div>
+
+    <div class="letter reveal">
+      <div class="letter__body">
+        <div class="ru">
+          <p>По собственной инициативе, совместно с группой единомышленников — ветеранов и пенсионеров различных силовых структур Республики Казахстан, мною учреждён Частный фонд «Ұлан&nbsp;Қалқаны» (далее — Фонд).</p>
+          <p>Основной целью деятельности Фонда является оказание благотворительной, материальной, консультационной и социальной поддержки военнослужащим, сотрудникам специальных государственных и правоохранительных органов, ветеранам боевых действий, лицам, уволенным с военной службы в запас, а также членам семей погибших и пострадавших при исполнении служебного долга.</p>
+          <p>Фонд формируется на добровольные пожертвования сознательных граждан и организаций страны и строит свою работу на принципах законности, прозрачности и гласности, не преследуя политических целей.</p>
+          <p>Для заинтересованных в сотрудничестве Мы готовы представить дополнительные материалы о Фонде (Устав, учредительные документы) и обсудить детали сотрудничества в удобном для Вас формате.</p>
+        </div>
+        <div class="kk">
+          <p>Өз бастамаммен, Қазақстан Республикасының түрлі күш құрылымдарында қызмет еткен ардагерлер мен зейнеткерлерден құралған пікірлестеріммен бірлесіп, «Ұлан&nbsp;Қалқаны» жеке қорын (бұдан әрі — Қор) құрдым.</p>
+          <p>Қордың негізгі мақсаты — әскери қызметшілерге, арнаулы мемлекеттік және құқық қорғау органдарының қызметкерлеріне, жауынгерлік іс-қимылдар ардагерлеріне, әскери қызметтен запасқа шығарылған адамдарға, сондай-ақ қызметтік борышын өтеу кезінде қаза тапқандар мен зардап шеккендердің отбасы мүшелеріне қайырымдылық, материалдық, консультациялық және әлеуметтік қолдау көрсету.</p>
+          <p>Қор ел азаматтары мен ұйымдарының ерікті қайырмалдықтары есебінен қалыптасады және өз жұмысын заңдылық, ашықтық және жариялылық қағидаттарына сүйене отырып, ешқандай саяси мақсат көздемей жүргізеді.</p>
+          <p>Ынтымақтастыққа мүдделі тараптарға Қор туралы қосымша материалдарды (Жарғы, құрылтай құжаттары) ұсынуға және ынтымақтастықтың егжей-тегжейін Сізге ыңғайлы форматта талқылауға дайынбыз.</p>
+        </div>
+      </div>
+
+      <div class="letter__sign">
+        <span class="letter__respect ru">С уважением,</span>
+        <span class="letter__respect kk">Құрметпен,</span>
+        <span class="letter__name ru">Хамидуллин Еркебулан Казбекович</span>
+        <span class="letter__name kk">Хамидуллин Еркебұлан Қазбекұлы</span>
+        <span class="letter__role ru">Учредитель Частного фонда «Ұлан Қалқаны»</span>
+        <span class="letter__role kk">«Ұлан Қалқаны» жеке қорының құрылтайшысы</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ГАЛЕРЕЯ (отключена: фото пока нет) ─────────────────────────────
+     Чтобы включить: снять комментарий с блока ниже.
+     Фото класть в assets/img/, заменяя <div class="ph">…</div> на
+     <img src="assets/img/имя-файла.jpg" alt="Подпись">
+<section class="sec" id="gallery">
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <h2 class="ru">Фонд в работе</h2>
+      <h2 class="kk">Қор жұмысы</h2>
+    </div>
+    <div class="gal">
+      <figure class="gal__item gal__item--wide reveal">
+        <div class="ph"><span class="ru">Фото · мероприятия фонда</span><span class="kk">Фото · қор іс-шаралары</span></div>
+      </figure>
+      <figure class="gal__item reveal">
+        <div class="ph"><span class="ru">Фото · адресная помощь</span><span class="kk">Фото · атаулы көмек</span></div>
+      </figure>
+      <figure class="gal__item reveal">
+        <div class="ph"><span class="ru">Фото · команда фонда</span><span class="kk">Фото · қор командасы</span></div>
+      </figure>
+    </div>
+  </div>
+</section>
+──────────────────────────────────────────────────────────────────── -->
+
+<!-- ── СОТРУДНИЧЕСТВО ──────────────────────────────────────────────── -->
+<section class="sec sec--sand" id="partner">
+  <div class="wrap">
+    <div class="partner reveal">
+      <div class="partner__l">
+        <h2 class="ru">Открыты к сотрудничеству</h2>
+        <h2 class="kk">Ынтымақтастыққа ашықпыз</h2>
+        <p class="ru">Заинтересованным сторонам Фонд готов представить дополнительные материалы — Устав и учредительные документы — и обсудить детали сотрудничества в удобном для Вас формате.</p>
+        <p class="kk">Мүдделі тараптарға Қор туралы қосымша материалдарды — Жарғы мен құрылтай құжаттарын — ұсынуға және ынтымақтастықтың егжей-тегжейін Сізге ыңғайлы форматта талқылауға дайынбыз.</p>
+      </div>
+      <ul class="partner__r">
+        <li><span class="ru">Устав Фонда</span><span class="kk">Қор жарғысы</span></li>
+        <li><span class="ru">Учредительные документы</span><span class="kk">Құрылтай құжаттары</span></li>
+        <li><span class="ru">Встреча в удобном формате</span><span class="kk">Ыңғайлы форматтағы кездесу</span></li>
+        <li><span class="ru">Отчётность по принципу гласности</span><span class="kk">Жариялылық қағидаты бойынша есептілік</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ── КОНТАКТЫ ────────────────────────────────────────────────────── -->
+<section class="sec sec--dark" id="contacts">
+  <div class="wrap">
+    <div class="sec__head sec__head--light reveal">
+      <h2 class="ru">Контакты</h2>
+      <h2 class="kk">Байланыс</h2>
+    </div>
+
+    <div class="cts">
+      <div class="cts__info reveal">
+        <div class="cts__row">
+          <span class="cts__k ru">Учредитель</span><span class="cts__k kk">Құрылтайшы</span>
+          <span class="cts__v ru">Хамидуллин Еркебулан Казбекович</span>
+          <span class="cts__v kk">Хамидуллин Еркебұлан Қазбекұлы</span>
+        </div>
+        <div class="cts__row">
+          <span class="cts__k ru">Адрес</span><span class="cts__k kk">Мекенжай</span>
+          <span class="cts__v ru">г. Астана, улица Тауелсиздик 22а, офис 706</span>
+          <span class="cts__v kk">Астана қ., Тәуелсіздік к-сі, 22а, 706-кеңсе</span>
+        </div>
+        <div class="cts__row">
+          <span class="cts__k ru">Телефон</span><span class="cts__k kk">Телефон</span>
+          <a class="cts__v cts__v--link" href="tel:+77074102815">+7 707 410 28 15</a>
+        </div>
+
+        <div class="cts__btns">
+          <a class="btn btn--gold" href="https://wa.me/77074102815" target="_blank" rel="noopener">WhatsApp</a>
+          <a class="btn btn--ghost" href="tel:+77074102815"><span class="ru">Позвонить</span><span class="kk">Қоңырау шалу</span></a>
+        </div>
+      </div>
+
+      <form class="form reveal" id="form" novalidate>
+        <h3 class="ru">Оставить обращение</h3>
+        <h3 class="kk">Өтініш қалдыру</h3>
+        <p class="form__note ru">Заполните поля — сообщение откроется в WhatsApp Фонда, останется нажать «отправить».</p>
+        <p class="form__note kk">Өрістерді толтырыңыз — хабарлама Қордың WhatsApp-ында ашылады, «жіберу» түймесін басу ғана қалады.</p>
+
+        <label class="fld">
+          <span class="ru">Ваше имя</span><span class="kk">Атыңыз</span>
+          <input type="text" name="name" autocomplete="name" required>
+        </label>
+        <label class="fld">
+          <span class="ru">Организация</span><span class="kk">Ұйым</span>
+          <input type="text" name="org" autocomplete="organization">
+        </label>
+        <label class="fld">
+          <span class="ru">Телефон или e-mail</span><span class="kk">Телефон немесе e-mail</span>
+          <input type="text" name="contact" autocomplete="tel" inputmode="text" required>
+        </label>
+        <label class="fld">
+          <span class="ru">Сообщение</span><span class="kk">Хабарлама</span>
+          <textarea name="msg" rows="4" required></textarea>
+        </label>
+
+        <button class="btn btn--gold btn--full" type="submit">
+          <span class="ru">Отправить в WhatsApp</span><span class="kk">WhatsApp-қа жіберу</span>
+        </button>
+        <p class="form__err" id="formErr" role="alert" aria-live="polite" hidden>
+          <span class="ru">Заполните имя, контакт и сообщение.</span><span class="kk">Аты-жөніңізді, байланыс деректеріңізді және хабарламаны толтырыңыз.</span>
+        </p>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ── ПОДВАЛ ──────────────────────────────────────────────────────── -->
+<footer class="ftr">
+  <div class="wrap ftr__in">
+    <div class="ftr__brand">
+      <img class="brand__mark" src="assets/img/logo-mark.png" alt="" width="214" height="220" style="height:32px">
+      <span>
+        <b>Ұлан Қалқаны</b>
+        <i class="ru">Частный фонд по поддержке военнослужащих · Астана</i>
+        <i class="kk">Әскери қызметшілерді қолдау жөніндегі жеке қор · Астана</i>
+      </span>
+    </div>
+    <p class="ftr__cp">© <span id="yr">2026</span> <span class="ru">Частный фонд «Ұлан Қалқаны». Все права защищены.</span><span class="kk">«Ұлан Қалқаны» жеке қоры. Барлық құқықтар қорғалған.</span></p>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
