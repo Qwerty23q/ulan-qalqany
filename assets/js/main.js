@@ -183,6 +183,64 @@ var SPLASH_ONCE_PER_VISIT = false;  // true — показывать один р
     err.hidden = true;
   });
 
+  /* ── 7. Копирование реквизитов ────────────────────────────────── */
+  function copyText(text) {
+    function fallback() {
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      // .catch: клипборд может быть запрещён политикой — тогда запасной путь
+      return navigator.clipboard.writeText(text).catch(fallback);
+    }
+    fallback();
+    return Promise.resolve();
+  }
+
+  document.querySelectorAll('.req__copy').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      // отклик сразу, не дожидаясь промиса: запись в буфер мгновенна,
+      // а зависший промис не должен оставлять кнопку немой
+      copyText(btn.getAttribute('data-copy'));
+      btn.classList.add('is-done');
+      btn.innerHTML = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8.5l3.2 3.2L13 5"/></svg>';
+      setTimeout(function () {
+        btn.classList.remove('is-done');
+        btn.innerHTML = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="5" y="5" width="9" height="9" rx="1"/><path d="M11 5V3a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h2"/></svg>';
+      }, 1600);
+    });
+  });
+
+  var copyAll = document.getElementById('copyAll');
+  if (copyAll) {
+    copyAll.addEventListener('click', function () {
+      var kk = html.getAttribute('data-lang') === 'kk';
+      var text = kk
+        ? ['«Ұлан Қалқаны» жеке қоры',
+           'БСН: 260740000334',
+           'Банк: «Фридом Банк Казахстана» АҚ',
+           'БСК: KZNVKZKA',
+           'ЖСК (IBAN): KZ68551Z600006311040',
+           'Төлем мақсаты: Қайырымдылық қайырмалдығы'].join('\n')
+        : ['Частный фонд «Ұлан Қалқаны»',
+           'БИН: 260740000334',
+           'Банк: АО «Фридом Банк Казахстана»',
+           'БИК: KZNVKZKA',
+           'ИИК (IBAN): KZ68551Z600006311040',
+           'Назначение платежа: Благотворительное пожертвование'].join('\n');
+      copyText(text);
+      copyAll.classList.add('is-done');
+      copyAll.querySelectorAll('span').forEach(function (sp) { sp.textContent = sp.getAttribute('data-done'); });
+      setTimeout(function () {
+        copyAll.classList.remove('is-done');
+        copyAll.querySelectorAll('span').forEach(function (sp) { sp.textContent = sp.getAttribute('data-idle'); });
+      }, 1800);
+    });
+  }
+
   /* ── 7. Год в подвале ─────────────────────────────────────────── */
   document.getElementById('yr').textContent = new Date().getFullYear();
 })();

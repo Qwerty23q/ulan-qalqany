@@ -356,6 +356,43 @@ html[data-lang="kk"] .ru{display:none !important}
 }
 .gal__item--wide .ph{aspect-ratio:21/9}
 
+/* ── реквизиты ──────────────────────────────────────────────────── */
+.req{max-width:1000px}
+.req__list{margin:0; border-bottom:1px solid var(--line)}
+.req__row{
+  display:grid; grid-template-columns:230px 1fr auto; gap:6px 26px; align-items:center;
+  border-top:1px solid var(--line); padding:clamp(15px,1.8vw,21px) 0;
+}
+.req__row:first-child{border-top:2px solid var(--ink)}
+.req__row dt{
+  font-size:11.5px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--gold-2); font-weight:600;
+}
+.req__row dd{
+  margin:0; font-family:var(--serif); font-size:clamp(17px,2vw,21px);
+  color:var(--ink); line-height:1.4; overflow-wrap:anywhere;
+}
+.req__code{
+  font-family:ui-monospace, "SF Mono", Menlo, Consolas, monospace !important;
+  font-size:clamp(16px,1.9vw,20px) !important; letter-spacing:.045em;
+  font-variant-numeric:tabular-nums;
+}
+.req__copy{
+  width:44px; height:44px; display:grid; place-items:center;
+  background:none; border:1px solid var(--line); border-radius:2px; cursor:pointer;
+  color:var(--muted); transition:color .25s, border-color .25s;
+}
+.req__copy svg{width:17px; height:17px}
+.req__copy:hover{color:var(--gold-2); border-color:var(--gold-2)}
+.req__copy.is-done{color:var(--gold-2); border-color:var(--gold-2)}
+.req__all{margin-top:26px}
+.req__all.is-done{border-color:var(--gold-2); color:var(--gold-2)}
+
+@media (max-width:700px){
+  .req__row{grid-template-columns:1fr auto}
+  .req__row dt{grid-column:1 / -1; margin-bottom:2px}
+}
+
 /* ── сотрудничество ─────────────────────────────────────────────── */
 .partner{display:grid; grid-template-columns:1.25fr .9fr; gap:clamp(34px,6vw,80px); align-items:center}
 .partner__l h2{font-size:clamp(1.8rem,3.8vw,2.7rem); margin-bottom:26px; text-wrap:balance}
