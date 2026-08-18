@@ -386,6 +386,11 @@ html[data-lang="kk"] .ru{display:none !important}
 .req__copy:hover{color:var(--gold-2); border-color:var(--gold-2)}
 .req__copy.is-done{color:var(--gold-2); border-color:var(--gold-2)}
 .req__all{margin-top:26px}
+.req__note{
+  margin:26px 0 0; max-width:62ch;
+  font-size:14.5px; line-height:1.65; color:var(--muted);
+  padding-left:16px; border-left:2px solid var(--gold);
+}
 .req__all.is-done{border-color:var(--gold-2); color:var(--gold-2)}
 
 @media (max-width:700px){
